@@ -33,8 +33,8 @@ RUN apt-get -y install cuda
 # COPY cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb .
 # RUN dpkg -i cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb && rm cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb
 
-# COPY requirement.txt .
-# RUN pip install -i https://mirrors.aliyun.com/pypi/simple/ --no-cache-dir -r requirement.txt
+COPY requirement.txt .
+RUN pip install -i https://mirrors.aliyun.com/pypi/simple/ --no-cache-dir -r requirement.txt
 
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
