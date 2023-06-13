@@ -2,7 +2,6 @@ opencv-python
 pytorch
 torchvision
 torchaudio
-cudatoolkit
 numpy
 scipy
 matplotlib
