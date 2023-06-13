@@ -26,8 +26,8 @@ RUN dpkg -i cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb && rm cudnn-loc
 RUN conda install -c http://mirrors.aliyun.com/anaconda/cloud/conda-forge --override-channel python=3.8
 RUN conda install -c fastai -c pytorch -c anaconda fastai gh anaconda
 
-# COPY requirement.txt .
-# RUN pip install -i https://mirrors.aliyun.com/pypi/simple/ --no-cache-dir -r requirement.txt
+COPY requirement.txt .
+RUN pip install -i https://mirrors.aliyun.com/pypi/simple/ --no-cache-dir -r requirement.txt
 
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
