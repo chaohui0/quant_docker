@@ -1,8 +1,4 @@
 opencv-python
-pytorch
-torchvision
-torchaudio
-numpy
 scipy
 matplotlib
 tables
@@ -14,5 +10,4 @@ pandas
 pyyaml
 func_timeout
 zmq
-tensorflow
 tensorboard

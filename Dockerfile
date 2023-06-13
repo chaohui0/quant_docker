@@ -6,7 +6,6 @@ COPY Miniconda3-latest-Linux-x86_64.sh .
 RUN /bin/bash Miniconda3-latest-Linux-x86_64.sh -b && rm Miniconda3-latest-Linux-x86_64.sh
 ENV PATH=/root/miniconda3/bin:${PATH}
 
-# RUN conda install -c http://mirrors.aliyun.com/anaconda/cloud/conda-forge --override-channels "gxx>=10.0" h5py "hdf5>=1.12" matplotlib numpy  "python=3.9" zlib
 RUN apt update
 RUN apt-get install -y lsb-release wget telnet curl vim cmake gnupg2 && apt-get clean all
 
@@ -18,23 +17,17 @@ COPY cuda-repo-wsl-ubuntu-12-1-local_12.1.1-1_amd64.deb .
 RUN dpkg -i cuda-repo-wsl-ubuntu-12-1-local_12.1.1-1_amd64.deb
 RUN cp /var/cuda-repo-wsl-ubuntu-12-1-local/cuda-*-keyring.gpg /usr/share/keyrings/
 RUN apt-get update
-RUN apt-get -y install cuda
+RUN apt-get -y install cuda && rm cuda-repo-wsl-ubuntu-12-1-local_12.1.1-1_amd64.deb
 
-# #wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
-# COPY cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
-# #wget http://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers/cuda-repo-ubuntu2004-11-0-local_11.0.2-450.51.05-1_amd64.deb
-# COPY cuda-repo-ubuntu2004-11-0-local_11.0.2-450.51.05-1_amd64.deb .
-# RUN dpkg -i cuda-repo-ubuntu2004-11-0-local_11.0.2-450.51.05-1_amd64.deb
-# RUN apt-key add /var/cuda-repo-ubuntu2004-11-0-local/7fa2af80.pub
-# RUN apt-get update
-# ENV DEBIAN_FRONTEND=noninteractive
-# RUN apt-get -y install cuda && rm cuda-repo-ubuntu2004-11-0-local_11.0.2-450.51.05-1_amd64.deb
+COPY cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb .
+RUN cp /var/cudnn-local-repo-ubuntu2004-8.9.2.26/cudnn-local-6D0A7AE1-keyring.gpg /usr/share/keyrings/
+RUN dpkg -i cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb && rm cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb
 
-# COPY cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb .
-# RUN dpkg -i cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb && rm cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb
+RUN conda install -c http://mirrors.aliyun.com/anaconda/cloud/conda-forge --override-channel python=3.8
+RUN conda install -c fastai -c pytorch -c anaconda fastai gh anaconda
 
-COPY requirement.txt .
-RUN pip install -i https://mirrors.aliyun.com/pypi/simple/ --no-cache-dir -r requirement.txt
+# COPY requirement.txt .
+# RUN pip install -i https://mirrors.aliyun.com/pypi/simple/ --no-cache-dir -r requirement.txt
 
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
