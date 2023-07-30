@@ -16,11 +16,16 @@ COPY cuda-wsl-ubuntu.pin /etc/apt/preferences.d/cuda-repository-pin-600
 COPY cuda-repo-wsl-ubuntu-12-1-local_12.1.1-1_amd64.deb .
 RUN dpkg -i cuda-repo-wsl-ubuntu-12-1-local_12.1.1-1_amd64.deb
 RUN cp /var/cuda-repo-wsl-ubuntu-12-1-local/cuda-*-keyring.gpg /usr/share/keyrings/
+
+RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
+RUN sed -i s@/security.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
+RUN apt-get clean
 RUN apt-get update
+
 RUN apt-get -y install cuda && rm cuda-repo-wsl-ubuntu-12-1-local_12.1.1-1_amd64.deb
 
 COPY cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb .
-RUN cp /var/cudnn-local-repo-ubuntu2004-8.9.2.26/cudnn-local-6D0A7AE1-keyring.gpg /usr/share/keyrings/
+#RUN cp /var/cudnn-local-repo-ubuntu2004-8.9.2.26/cudnn-local-6D0A7AE1-keyring.gpg /usr/share/keyrings/
 RUN dpkg -i cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb && rm cudnn-local-repo-ubuntu2004-8.9.2.26_1.0-1_amd64.deb
 
 RUN conda install -c http://mirrors.aliyun.com/anaconda/cloud/conda-forge --override-channel python=3.8
